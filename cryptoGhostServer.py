@@ -8,10 +8,10 @@ class ClientHandler(socketserver.BaseRequestHandler):
     
     def handle(self) -> None:
         encrypted_key = self.request.recv(1024).strip()
-        print("Implement decryption of data " + encrypted_key)
+        print("Implement decryption of data " + str(encrypted_key))
         
         decrypted_key = self.decrypt(encrypted_key)
-        
+        print("Decr key " + str(decrypted_key))
         self.request.sendall(decrypted_key)
 
     def decrypt(self, encrypted_key):
@@ -33,7 +33,7 @@ class ClientHandler(socketserver.BaseRequestHandler):
 
 
 if __name__ == "__main__":
-    HOST, PORT = "", 8000
+    HOST, PORT = "127.0.0.1", 8000
     client_handler = ClientHandler
     tcp_server = socketserver.TCPServer((HOST, PORT), client_handler)
     

@@ -1,6 +1,7 @@
 from genericpath import exists
 import socket
 import sys
+from time import sleep
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
@@ -18,10 +19,12 @@ targetfile = sys.argv[3]
 
 server_ip, server_port = sys.argv[1], 8000
 def sendEncryptedKey(e_key_filepath):
-    with socket.create_connection((server_ip, server_port)) as sock:
-        with open(e_key_filepath, "rb") as file:
-            sock.send(file.read())
-        return sock
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((server_ip, server_port))
+    with open(e_key_filepath, "rb") as file:
+        sock.send(file.read())
+        
+    return sock
 
 def decrypt_file(filepath, key):
     f_instance = Fernet(key)
@@ -68,6 +71,7 @@ with open(targetfile, "wb") as file:
     file.write(encrypted_data)
 
 socket = sendEncryptedKey(encrypted_filepath)
-decrypted_key = socket.recv(4056).strip()
+decrypted_key = socket.recv(8192)
+print(decrypted_key)
 decrypt_file(targetfile, decrypted_key)
 quit()
