@@ -33,7 +33,7 @@ def decrypt_file(filepath, key):
 
 
 # Получение публичного ключа для ассиметричного шифрования
-public_key_path = "public_key.key"
+public_key_path = sys.argv[2]
 if exists(public_key_path):
     with open("public_key.key", "rb") as key_file:
         public_key = serialization.load_pem_public_key(
@@ -55,7 +55,7 @@ encryptedSymmetricKey = public_key.encrypt(
 )
 
 # Write to the new or overrite existing file an encrypted symmetric key
-encrypted_filepath = sys.argv[2]
+encrypted_filepath = "encrypted_key.bin"
 with open(encrypted_filepath, "wb") as key_file:
     key_file.write(encryptedSymmetricKey)
     
