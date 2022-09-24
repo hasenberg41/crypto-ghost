@@ -35,7 +35,7 @@ def decrypt_file(filepath, key):
 # Получение публичного ключа для ассиметричного шифрования
 public_key_path = sys.argv[2]
 if exists(public_key_path):
-    with open("public_key.key", "rb") as key_file:
+    with open(public_key_path, "rb") as key_file:
         public_key = serialization.load_pem_public_key(
             key_file.read(),
             backend=default_backend()
