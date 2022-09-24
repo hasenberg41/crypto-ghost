@@ -8,12 +8,13 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.fernet import Fernet
 
 # argv[1] - ip address of TCP Server
-# argv[2] - target file to encoding and decoding
+# argv[2] - file of public RSA key
+# argv[3] - target file to encoding and decoding
 
 # Generate symmetric key
 symmetricKey = Fernet.generate_key()
 FernetInstance = Fernet(symmetricKey)
-targetfile = sys.argv[2]
+targetfile = sys.argv[3]
 
 server_ip, server_port = sys.argv[1], 8000
 def sendEncryptedKey(e_key_filepath):
@@ -54,7 +55,7 @@ encryptedSymmetricKey = public_key.encrypt(
 )
 
 # Write to the new or overrite existing file an encrypted symmetric key
-encrypted_filepath = "encryptedSymmertricKey.key"
+encrypted_filepath = sys.argv[2]
 with open(encrypted_filepath, "wb") as key_file:
     key_file.write(encryptedSymmetricKey)
     
